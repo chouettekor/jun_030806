@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Starbucks Gift</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+min-height:100vh;
+background:#006241;
+font-family:
+-apple-system,
+BlinkMacSystemFont,
+"Helvetica Neue",
+Arial,
+sans-serif;
+
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
+}
+
+
+.wrapper{
+width:90%;
+max-width:380px;
+text-align:center;
+}
+
+
+.logo{
+font-size:52px;
+margin-bottom:15px;
+}
+
+
+h1{
+font-size:25px;
+margin:10px 0 25px;
+}
+
+
+.message{
+font-size:17px;
+line-height:1.8;
+margin-bottom:30px;
+}
+
+
+button{
+
+width:100%;
+padding:15px;
+
+border:none;
+border-radius:30px;
+
+font-size:16px;
+font-weight:bold;
+
+background:white;
+color:#006241;
+
+cursor:pointer;
+
+}
+
+
+.envelope{
+
+width:210px;
+height:140px;
+
+background:white;
+
+margin:0 auto 25px;
+
+border-radius:15px;
+
+position:relative;
+
+box-shadow:
+0 15px 30px rgba(0,0,0,.25);
+
+cursor:pointer;
+
+}
+
+
+.envelope:after{
+
+content:"☕";
+
+position:absolute;
+
+font-size:45px;
+
+left:0;
+right:0;
+top:45px;
+
+color:#006241;
+
+}
+
+
+.card-area{
+
+display:none;
+
+}
+
+
+.card-area.show{
+
+display:block;
+
+animation:fade .8s;
+
+}
+
+
+@keyframes fade{
+
+from{
+opacity:0;
+transform:translateY(30px);
+}
+
+to{
+opacity:1;
+transform:none;
+}
+
+}
+
+
+.card{
+
+height:190px;
+
+background:
+linear-gradient(
+135deg,
+#00704A,
+#004d35
+);
+
+border-radius:18px;
+
+padding:25px;
+
+margin:25px 0;
+
+text-align:left;
+
+box-shadow:
+0 15px 30px rgba(0,0,0,.35);
+
+}
+
+
+.card-title{
+
+font-size:22px;
+
+font-weight:bold;
+
+margin-bottom:45px;
+
+}
+
+
+.info{
+
+background:
+rgba(255,255,255,.12);
+
+padding:12px;
+
+border-radius:10px;
+
+margin-bottom:10px;
+
+cursor:pointer;
+
+}
+
+
+.label{
+
+font-size:11px;
+
+opacity:.7;
+
+}
+
+
+.value{
+
+margin-top:5px;
+
+font-size:18px;
+
+letter-spacing:2px;
+
+}
+
+
+.note{
+
+font-size:12px;
+
+opacity:.8;
+
+line-height:1.6;
+
+margin-top:20px;
+
+}
+
+
+.toast{
+
+position:fixed;
+
+bottom:35px;
+
+background:white;
+
+color:#006241;
+
+padding:12px 20px;
+
+border-radius:30px;
+
+opacity:0;
+
+transition:.3s;
+
+}
+
+
+.toast.show{
+
+opacity:1;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="wrapper">
+
+
+<div class="logo">
+☕
+</div>
+
+
+<h1>
+Starbucks Gift
+</h1>
+
+
+<div id="before">
+
+
+<div class="envelope"></div>
+
+
+<div class="message">
+
+いつもありがとう！<br>
+
+たまにはコーヒーで<br>
+
+ゆっくり一息ついてね。
+
+</div>
+
+
+<button onclick="openGift()">
+🎁 開ける
+</button>
+
+
+</div>
+
+
+
+<div id="after" class="card-area">
+
+
+<div class="card">
+
+
+<div class="card-title">
+Starbucks
+</div>
+
+
+<div class="info" onclick="copyCard()">
+
+<div class="label">
+CARD NUMBER
+</div>
+
+<div id="card" class="value">
+•••• •••• •••• ••••
+</div>
+
+</div>
+
+
+<div class="info" onclick="copyPin()">
+
+<div class="label">
+PIN
+</div>
+
+<div id="pin" class="value">
+••••
+</div>
+
+</div>
+
+
+</div>
+
+
+<button onclick="openApp()">
+
+スターバックスアプリを開く
+
+</button>
+
+
+<div class="note">
+
+カード番号またはPINをタップするとコピーできます。<br>
+日本のスターバックスアプリで登録してください。
+
+<br><br>
+
+Enjoy your coffee time ☕
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<div id="toast" class="toast">
+コピーしました
+</div>
+
+
+
+<script>
+
+
+let cardNumber="";
+let pin="";
+
+
+fetch("gift-data.json")
+.then(r=>r.json())
+.then(data=>{
+
+cardNumber=data.cardNumber;
+pin=data.pin;
+
+});
+
+
+
+function openGift(){
+
+document.getElementById("before")
+.style.display="none";
+
+document.getElementById("after")
+.classList.add("show");
+
+}
+
+
+
+function copyCard(){
+
+navigator.clipboard.writeText(cardNumber);
+
+document.getElementById("card").innerText =
+cardNumber.match(/.{1,4}/g).join(" ");
+
+toast();
+
+}
+
+
+
+function copyPin(){
+
+navigator.clipboard.writeText(pin);
+
+document.getElementById("pin").innerText =
+pin;
+
+toast();
+
+}
+
+
+
+function toast(){
+
+let t=document.getElementById("toast");
+
+t.classList.add("show");
+
+setTimeout(()=>{
+
+t.classList.remove("show");
+
+},1500);
+
+}
+
+
+
+function openApp(){
+
+    const ua = navigator.userAgent.toLowerCase();
+
+    // iPhone / iPad
+    if(/iphone|ipad|ipod/.test(ua)){
+
+        // 일본 Starbucks 앱 URL Scheme
+        window.location.href =
+        "starbucksjp://";
+
+        setTimeout(()=>{
+
+            window.location.href =
+            "https://apps.apple.com/jp/app/starbucks-japan/id293778156";
+
+        },1500);
+
+    }
+
+
+    // Android
+    else if(/android/.test(ua)){
+
+        window.location.href =
+        "intent://#Intent;scheme=starbucksjp;package=jp.starbucks.android.mystarbucks;end";
+
+
+        setTimeout(()=>{
+
+            window.location.href =
+            "https://play.google.com/store/apps/details?id=jp.starbucks.android.mystarbucks";
+
+        },1500);
+
+    }
+
+
+    // PC 등
+    else{
+
+        window.location.href =
+        "https://www.starbucks.co.jp/";
+
+    }
+
+}
+
+
+</script>
+
+
+</body>
+</html>
