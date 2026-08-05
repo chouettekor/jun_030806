@@ -38,10 +38,32 @@ text-align:center;
 
 
 .logo{
-font-size:52px;
 margin-bottom:15px;
+display:flex;
+justify-content:center;
 }
 
+.logo img{
+width:80px;
+height:80px;
+object-fit:contain;
+filter:drop-shadow(0 4px 8px rgba(0,0,0,.25));
+}
+
+.logo-circle{
+width:90px;
+height:90px;
+border-radius:50%;
+background:white;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.logo-circle img{
+width:75px;
+height:75px;
+}
 
 h1{
 font-size:25px;
@@ -146,7 +168,8 @@ transform:none;
 
 .card{
 
-height:190px;
+min-height:230px;
+height:auto;
 
 background:
 linear-gradient(
@@ -157,15 +180,16 @@ linear-gradient(
 
 border-radius:18px;
 
-padding:25px;
+padding:30px 25px;
 
-margin:25px 0;
+margin:30px 0;
 
 text-align:left;
 
 box-shadow:
 0 15px 30px rgba(0,0,0,.35);
 
+overflow:hidden;
 }
 
 
@@ -175,7 +199,19 @@ font-size:22px;
 
 font-weight:bold;
 
-margin-bottom:45px;
+margin-bottom:30px;
+
+}
+
+.card-title img {
+
+width:60px;
+
+height:60px;
+
+object-fit:contain;
+
+filter:brightness(0) invert(1);
 
 }
 
@@ -209,9 +245,11 @@ opacity:.7;
 
 margin-top:5px;
 
-font-size:18px;
+font-size:16px;
 
-letter-spacing:2px;
+letter-spacing:1.5px;
+
+word-break:break-all;
 
 }
 
@@ -269,7 +307,9 @@ opacity:1;
 
 
 <div class="logo">
-☕
+<div class="logo-circle">
+<img src="starbucks_logo.svg" alt="Starbucks">
+</div>
 </div>
 
 
@@ -311,7 +351,7 @@ Starbucks Gift
 
 
 <div class="card-title">
-Starbucks
+<img src="starbucks-logo.svg" alt "Starbucks">
 </div>
 
 
@@ -450,52 +490,33 @@ t.classList.remove("show");
 
 function openApp(){
 
-    const ua = navigator.userAgent.toLowerCase();
-
-    // iPhone / iPad
-    if(/iphone|ipad|ipod/.test(ua)){
-
-        // 일본 Starbucks 앱 URL Scheme
-        window.location.href =
-        "starbucksjp://";
-
-        setTimeout(()=>{
-
-            window.location.href =
-            "https://apps.apple.com/jp/app/starbucks-japan/id293778156";
-
-        },1500);
-
-    }
+const ua = navigator.userAgent.toLowerCase();
 
 
-    // Android
-    else if(/android/.test(ua)){
+if(/iphone|ipad|ipod/.test(ua)){
 
-        window.location.href =
-        "intent://#Intent;scheme=starbucksjp;package=jp.starbucks.android.mystarbucks;end";
-
-
-        setTimeout(()=>{
-
-            window.location.href =
-            "https://play.google.com/store/apps/details?id=jp.starbucks.android.mystarbucks";
-
-        },1500);
-
-    }
-
-
-    // PC 등
-    else{
-
-        window.location.href =
-        "https://www.starbucks.co.jp/";
-
-    }
+    window.location.href =
+    "https://apps.apple.com/jp/app/starbucks-japan/id293778156";
 
 }
 
+
+else if(/android/.test(ua)){
+
+    window.location.href =
+    "https://play.google.com/store/apps/details?id=jp.starbucks.android.mystarbucks";
+
+}
+
+
+else{
+
+    window.location.href =
+    "https://www.starbucks.co.jp/";
+
+}
+
+}
 
 </script>
 
